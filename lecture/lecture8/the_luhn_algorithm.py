@@ -22,3 +22,5 @@ def luhn_sum_double(n):
         return luhn_digit
     else:
         return luhn_sum(all_but_last) + luhn_digit
+
+luhn_sum(7758258)
