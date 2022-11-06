@@ -17,6 +17,13 @@ def choose(paragraphs, select, k):
     """
     # BEGIN PROBLEM 1
     "*** YOUR CODE HERE ***"
+    count = -1
+    for paragraph in paragraphs:
+        if select(paragraph):
+            count += 1
+            if count == k:
+                return paragraph
+    return ''   
     # END PROBLEM 1
 
 
@@ -33,6 +40,13 @@ def about(topic):
     assert all([lower(x) == x for x in topic]), 'topics should be lowercase.'
     # BEGIN PROBLEM 2
     "*** YOUR CODE HERE ***"
+    def select(paragraph):         
+        for keyword in split(remove_punctuation(lower(paragraph))):
+            for n in topic:
+                if n == keyword:
+                    return True
+        return False      
+    return select
     # END PROBLEM 2
 
 
@@ -57,6 +71,21 @@ def accuracy(typed, reference):
     reference_words = split(reference)
     # BEGIN PROBLEM 3
     "*** YOUR CODE HERE ***"
+    total = 0
+    correct_number = 0
+    sentinel = 0
+    if len(reference_words) > 0 and len(typed_words) > 0:
+        for every_typed_words in typed_words:        
+            if reference_words[0] == every_typed_words and sentinel == 0:
+                correct_number += 1
+            total += 1
+            if(len(reference_words) > 1):
+                reference_words = reference_words[1:]
+            else:
+                sentinel = 1
+        return 100*correct_number/total
+    else:
+        return 0.0  
     # END PROBLEM 3
 
 
