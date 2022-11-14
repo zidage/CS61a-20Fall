@@ -76,3 +76,30 @@ def print_sums(t, so_far):
     else:
         for b in branches(t):
             print_sums(b, so_far)
+
+def height(t):
+    """Return the height of a tree"""
+    if is_leaf(t):
+        return 0
+    else:
+        return max([ 1 + height(b) for b in branches(t)])
+
+def max_path_sum(t):
+    """Return the maximum path sum of the tree"""
+    if is_leaf(t):
+        return lable(t)
+    else:
+        return max([lable(b) + height(b) for b in branches(t)]) + lable(t)
+
+def square_tree(t):
+    """Return a tree wit the square of every element in t"""
+    return tree(lable(t) * lable(t), [square_tree(b) for b in branches(t)])
+
+def find_path(t, x):
+    """Find the path to the node containing x"""
+    if lable(t) == x:
+        return [x]
+    else:
+        path = [lable(t)] + [find_path(b, x) for b in branches(t)]
+        if lable(t) == x:
+            return path
