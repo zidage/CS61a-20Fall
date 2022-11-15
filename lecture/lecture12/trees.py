@@ -98,8 +98,12 @@ def square_tree(t):
 def find_path(t, x):
     """Find the path to the node containing x"""
     if lable(t) == x:
-        return [x]
-    else:
-        path = [lable(t)] + [find_path(b, x) for b in branches(t)]
-        if lable(t) == x:
-            return path
+        return [lable(t)]
+    paths = [find_path(b, x) for b in branches(t)]
+    for path in paths:
+        if path:
+            return [lable(t)] + path
+
+
+
+    
