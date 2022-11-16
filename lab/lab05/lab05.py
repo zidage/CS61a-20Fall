@@ -12,6 +12,10 @@ def couple(s, t):
     """
     assert len(s) == len(t)
     "*** YOUR CODE HERE ***"
+    sum = []
+    for i in range(len(s)):
+        sum += [[s[i], t[i]]]
+    return sum
 
 
 from math import sqrt
@@ -27,6 +31,8 @@ def distance(city_a, city_b):
     5.0
     """
     "*** YOUR CODE HERE ***"
+    return sqrt(pow((get_lat(city_a) - get_lat(city_b)), 2) + pow((get_lon(city_a) - get_lon(city_b)), 2))
+
 
 def closer_city(lat, lon, city_a, city_b):
     """
