@@ -50,6 +50,14 @@ def closer_city(lat, lon, city_a, city_b):
     'Bucharest'
     """
     "*** YOUR CODE HERE ***"
+    temp = make_city('t', lat, lon);
+    dist_a = distance(temp, city_a)
+    dist_b = distance(temp, city_b)
+    if dist_a <= dist_b:
+        return get_name(city_a)
+    else:
+        return get_name(city_b)
+
 
 def check_city_abstraction():
     """
@@ -149,7 +157,16 @@ def berry_finder(t):
     True
     """
     "*** YOUR CODE HERE ***"
+    
+    if label(t) == 'berry':
+        return True 
+    else:
+        for b in branches(t):
+            if berry_finder(b):
+                return True
+        return False
 
+   
 
 def sprout_leaves(t, leaves):
     """Sprout new leaves containing the data in leaves at each leaf in
@@ -185,6 +202,11 @@ def sprout_leaves(t, leaves):
           2
     """
     "*** YOUR CODE HERE ***"
+    if is_leaf(t):
+        return tree(label(t), [tree(l) for l in leaves])
+    else:
+        return tree(label(t), [sprout_leaves(b, leaves) for b in branches(t)])
+
 
 # Abstraction tests for sprout_leaves and berry_finder
 def check_abstraction():
@@ -243,7 +265,7 @@ def coords(fn, seq, lower, upper):
     [[-2, 4], [1, 1], [3, 9]]
     """
     "*** YOUR CODE HERE ***"
-    return ______
+    return [[x, fn(x)] for x in seq if fn(x) >= lower and fn(x) <= upper]
 
 
 def riffle(deck):
