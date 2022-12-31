@@ -127,7 +127,14 @@ class Ant(Insect):
             place.ant = self
         else:
             # BEGIN Problem Optional 2
-            assert place.ant is None, 'Two ants in {0}'.format(place)
+            if place.ant.can_contain(self):
+                place.ant.contain_ant(self)
+            elif self.can_contain(place.ant):
+                contained_ant = place.ant
+                place.ant = self
+                self.contain_ant(contained_ant)
+            else:
+                assert place.ant is None, 'Two ants in {0}'.format(place)
             # END Problem Optional 2
         Insect.add_to(self, place)
 
@@ -510,11 +517,17 @@ class ContainerAnt(Ant):
     def can_contain(self, other):
         # BEGIN Problem Optional 2
         "*** YOUR CODE HERE ***"
+        if self.contained_ant is None and not isinstance(other, ContainerAnt):
+            return True
+        else:
+            return False
         # END Problem Optional 2
 
     def contain_ant(self, ant):
         # BEGIN Problem Optional 2
         "*** YOUR CODE HERE ***"
+        if self.can_contain(ant):
+            self.contained_ant = ant
         # END Problem Optional 2
 
     def remove_ant(self, ant):
@@ -535,6 +548,8 @@ class ContainerAnt(Ant):
     def action(self, gamestate):
         # BEGIN Optional 2
         "*** YOUR CODE HERE ***"
+        if self.contained_ant is not None:
+            self.contained_ant.action(gamestate)
         # END Optional 2
 
 class BodyguardAnt(ContainerAnt):
@@ -544,7 +559,10 @@ class BodyguardAnt(ContainerAnt):
     food_cost = 4
     # OVERRIDE CLASS ATTRIBUTES HERE
     # BEGIN Optional 2
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
+
+    def __init__(self, armor=2):
+        ContainerAnt.__init__(self, armor)
     # END Optional 2
 
 class TankAnt(ContainerAnt):
@@ -555,7 +573,7 @@ class TankAnt(ContainerAnt):
     food_cost = 6
     # OVERRIDE CLASS ATTRIBUTES HERE
     # BEGIN Problem Optional 3
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
     # END Problem Optional 3
 
     def __init__(self, armor=2):
@@ -564,6 +582,11 @@ class TankAnt(ContainerAnt):
     def action(self, gamestate):
         # BEGIN Problem Optional 3
         "*** YOUR CODE HERE ***"
+        if self.contained_ant is not None:
+            self.contained_ant.action(gamestate)
+        bees_lst = self.place.bees[:]
+        for bee in bees_lst:
+            Insect.reduce_armor(bee, self.damage)
         # END Problem Optional 3
 ############
 # Statuses #
@@ -576,6 +599,7 @@ def make_slow(action, bee):
     """
     # BEGIN Problem Optional 4
     "*** YOUR CODE HERE ***"
+    
     # END Problem Optional 4
 
 def make_scare(action, bee):
